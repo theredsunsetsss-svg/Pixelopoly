@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#244b86">
+  <title>Pixelopoly — главная</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <script src="../js/main.js" defer></script>
+  <link rel="icon" type="image/png" href="../../img/main/icon.png">
+</head>
+<body>
+  <main class="landing">
+    <header class="site-header">
+      <a class="brand" href="main.html" aria-label="Pixelopoly — главная">
+        <span class="brand__dice" aria-hidden="true">✦</span>
+        <span class="brand__name">Pixelopoly</span>
+        <span class="brand__tagline">Играй. Исследуй. Побеждай!</span>
+      </a>
+
+      <a class="account-button" href="login.html" aria-label="Войти в аккаунт" title="Аккаунт">
+        <span class="account-button__icon" aria-hidden="true">♟</span>
+        <span class="account-button__label">Аккаунт</span>
+      </a>
+    </header>
+
+    <section class="hero-content" aria-label="Главное меню Pixelopoly">
+      <div class="menu-panel">
+        <p class="menu-panel__eyebrow">Добро пожаловать в мир приключений</p>
+        <nav class="main-menu" aria-label="Главное меню">
+          <a class="wood-button wood-button--primary" href="login.html">
+            <span class="wood-button__icon" aria-hidden="true">▶</span>
+            <span>Играть</span>
+          </a>
+          <button class="wood-button" id="open-settings" type="button">
+            <span class="wood-button__icon" aria-hidden="true">⚙</span>
+            <span>Настройки</span>
+          </button>
+          <a class="wood-button" href="rules.html">
+            <span class="wood-button__icon" aria-hidden="true">▤</span>
+            <span>Правила игры</span>
+          </a>
+          <a class="wood-button" href="rating.html">
+            <span class="wood-button__icon" aria-hidden="true">♛</span>
+            <span>Рейтинг</span>
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="battle-scene" id="battle-scene" aria-label="Маг сражается с драконом">
+      <div class="scene-sparkles" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <img
+        class="character character--mage"
+        id="mage"
+        src="../../img/main/am-1.png"
+        alt="Фиолетовый маг"
+        draggable="false"
+      >
+
+      <img
+        class="projectile"
+        id="projectile"
+        src="../../img/main/af-1.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+      >
+
+      <img
+        class="character character--dragon"
+        id="dragon"
+        src="../../img/main/ad-1.png"
+        alt="Красный дракон"
+        draggable="false"
+      >
+
+      <div class="victory-effects" id="victory-effects" aria-hidden="true">
+        <span>✦</span><span>✧</span><span>★</span><span>✦</span>
+        <b>+ Награда!</b>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>© 2026 Pixelopoly</span>
+      <span class="site-footer__status"><i></i> Мир открыт для приключений</span>
+    </footer>
+  </main>
+
+  <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <form method="dialog" class="settings-window">
+      <button class="settings-close" aria-label="Закрыть настройки" value="close">×</button>
+      <div class="settings-window__heading">
+        <span aria-hidden="true">⚙</span>
+        <h2 id="settings-title">Настройки</h2>
+      </div>
+
+      <label class="setting-row">
+        <span>
+          <strong>Звуковые эффекты</strong>
+          <small>Звуки магии и игровых действий</small>
+        </span>
+        <input type="checkbox" id="sound-toggle">
+      </label>
+
+      <label class="setting-row">
+        <span>
+          <strong>Анимация персонажей</strong>
+          <small>Сцена с магом и драконом на главной</small>
+        </span>
+        <input type="checkbox" id="animation-toggle" checked>
+      </label>
+
+      <div class="settings-window__actions">
+        <button class="wood-button wood-button--primary" value="save">Готово</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
