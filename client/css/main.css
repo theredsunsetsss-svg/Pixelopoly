@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Condensed:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Slab:wght@400;500;600;700;800&display=swap');
 
 :root {
   --sky-top: #315fa5;
@@ -21,7 +21,7 @@ body {
     margin: 0;
     min-height: 100vh;
     color: var(--ink);
-    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-family: "Roboto Slab", Georgia, serif;
 
     background-image: url("../../img/main/main-bg.png");
     background-position: center top;
@@ -77,13 +77,10 @@ button, a, input { font: inherit; }
 }
 
 .brand__tagline {
-  margin-top: 7px;
-  padding: 5px 13px;
+  margin-top: 1px;
+  padding: 3px 13px;
   color: #302019;
-  background: #f4d28e;
-  border: 3px solid #6c4029;
-  box-shadow: 3px 4px 0 rgba(41, 25, 22, .45);
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
   text-shadow: none;
 }
@@ -420,5 +417,507 @@ button, a, input { font: inherit; }
 @media (max-width: 700px) {
     .character--dragon {
         bottom: 12%;
+    }
+}
+
+
+/* ДЕРЕВЯННЫЕ КНОПКИ ГЛАВНОГО МЕНЮ */
+.main-menu {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    width: 100%;
+}
+
+.menu-button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(230px, 78vw);
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .18s ease, filter .18s ease;
+    appearance: none;
+}
+
+.menu-button img {
+    grid-area: 1 / 1;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.menu-button span {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 1;
+    color: #382319;
+    font-family: "Roboto Slab", Georgia, serif;
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    text-shadow: 1px 1px 0 rgba(255, 220, 160, .55);
+    pointer-events: none;
+}
+
+.main-menu .menu-button:first-child span {
+    transform: translateY(4px);
+}
+
+.menu-button:hover {
+    transform: translateY(-2px) scale(1.035);
+    filter: brightness(1.1);
+}
+
+.menu-button:active {
+    transform: scale(.97);
+}
+
+.menu-button:focus-visible,
+.account-button:focus-visible {
+    outline: 3px dashed #fff0b0;
+    outline-offset: 4px;
+}
+
+/* ДЕРЕВЯННАЯ КНОПКА АККАУНТА */
+.account-button {
+    position: absolute;
+    z-index: 10;
+    top: 15px;
+    right: 20px;
+    display: grid;
+    place-items: center;
+    width: 145px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    text-decoration: none;
+    transition: transform .18s ease, filter .18s ease;
+}
+
+.account-button img {
+    grid-area: 1 / 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.account-button span {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 1;
+    color: #382319;
+    font-size: 16px;
+    font-weight: 800;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.account-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.account-button:active {
+    transform: scale(.97);
+}
+
+/* GIF-КУБОК: сохраняем пропорции анимации */
+.victory-effects {
+    pointer-events: none;
+}
+
+.victory-trophy {
+    display: block;
+    width: 120px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 700px) {
+    .menu-button {
+        width: min(195px, 75vw);
+    }
+
+    .menu-button span {
+        font-size: 16px;
+    }
+
+    .account-button {
+        width: 115px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .account-button span {
+        font-size: 13px;
+    }
+}
+
+.settings-dialog {
+    border: none;
+    padding: 0;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    overflow: visible;
+    width: min(480px, 92vw);
+    max-width: 480px;
+}
+
+.settings-dialog::backdrop {
+    background: rgba(24, 23, 39, 0.65);
+    backdrop-filter: blur(3px);
+}
+
+.settings-window {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 65px 55px 45px;
+    background: url("../../img/all/bg-5.png") center / 100% 100% no-repeat;
+    color: #432c20;
+    font-family: "Roboto Slab", Georgia, serif;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.settings-window__heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.settings-window__heading span {
+    font-size: 25px;
+}
+
+.settings-window__heading h2 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.settings-close {
+    position: absolute;
+    top: 25px;
+    right: 61px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    color: #000000;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.settings-close:hover {
+    color: #a33c29;
+}
+
+.settings-close:focus {
+    outline: none;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(116, 75, 43, 0.3);
+}
+
+.setting-row span {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.setting-row strong {
+    font-size: 14px;
+}
+
+.setting-row small {
+    font-size: 11px;
+    color: #765b46;
+}
+
+.setting-row input[type="checkbox"] {
+    appearance: none;
+    flex-shrink: 0;
+    width: 42px;
+    height: 23px;
+    border-radius: 20px;
+    background: #a88a70;
+    border: 2px solid #75543a;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.setting-row input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 2px;
+    left: 2px;
+    background: #fff0ce;
+    border-radius: 50%;
+    transition: transform .2s;
+}
+
+.setting-row input[type="checkbox"]:checked {
+    background: #63884a;
+}
+
+.setting-row input[type="checkbox"]:checked::before {
+    transform: translateX(18px);
+}
+
+.settings-window__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.wood-button--primary {
+    width: 145px;
+    height: 42px;
+    border: 2px solid #704323;
+    outline: none;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, #c98b4b, #a96832);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+    color: #fff1d5;
+    font-family: "Roboto Slab", Georgia, serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.wood-button--primary:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+    .settings-window {
+        padding: 60px 35px 35px;
+    }
+
+    .settings-window__heading h2 {
+        font-size: 21px;
+    }
+}
+
+.about-section {
+    width: min(1100px, 92%);
+    margin: 80px auto 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 75px;
+    color: #49301f;
+    font-family: "Roboto Slab", Georgia, serif;
+}
+
+.about-panel {
+    position: relative;
+    padding: 45px 55px 35px;
+    background: url("../../img/all/bg-2.png") center / 100% 100% no-repeat;
+    text-align: center;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: clamp(20px, 3vw, 28px);
+    color: #54351f;
+}
+
+.heading-decoration {
+    color: #b37a36;
+    font-size: 23px;
+}
+
+.about-description {
+    max-width: 760px;
+    margin: 0 auto 25px;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.kingdom-image {
+    display: block;
+    width: min(680px, 100%);
+    max-height: 220px;
+    object-fit: contain;
+    margin: 0 auto;
+    image-rendering: pixelated;
+}
+
+.about-bottom {
+    margin-top: 18px;
+    font-size: 13px;
+    font-style: italic;
+    color: #88613d;
+}
+
+.how-section,
+.features-section {
+    text-align: center;
+}
+
+.section-subtitle {
+    margin: 0 0 30px;
+    color: #e9d1a5;
+    font-size: 14px;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.step-card {
+    position: relative;
+    padding: 24px 17px;
+    background: url("../../img/all/bg-1.png") center / 100% 100% no-repeat;
+    min-height: 210px;
+    box-sizing: border-box;
+}
+
+.step-card img {
+    width: 78px;
+    height: 78px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.step-number {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #a16a31;
+    font-weight: 800;
+}
+
+.step-card h3 {
+    font-size: 15px;
+    margin: 7px 0;
+}
+
+.step-card p {
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 20px;
+    padding: 22px 28px;
+    min-height: 125px;
+    box-sizing: border-box;
+    background: url("../../img/all/bg-4.png") center / 100% 100% no-repeat;
+}
+
+.feature-card img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+}
+
+.feature-card h3 {
+    margin: 0 0 7px;
+    font-size: 16px;
+}
+
+.feature-card p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+@media (max-width: 800px) {
+    .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .about-panel {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 520px) {
+    .about-section {
+        width: 95%;
+        gap: 50px;
+    }
+
+    .steps-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-panel {
+        padding: 35px 25px;
+    }
+
+    .about-description {
+        font-size: 13px;
+    }
+
+    .section-heading {
+        gap: 8px;
+    }
+
+    .feature-card {
+        padding: 20px;
     }
 }

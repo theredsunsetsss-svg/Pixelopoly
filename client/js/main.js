@@ -18,23 +18,40 @@ const ASSET = {
 const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
 let animationTimer = null;
+let animationRunId = 0;
 let audioContext = null;
 
 function readSetting(key, fallback) {
-  const saved = localStorage.getItem(key);
-  return saved === null ? fallback : saved === "true";
+  try {
+    const saved = localStorage.getItem(key);
+    return saved === null ? fallback : saved === "true";
+  } catch {
+    return fallback;
+  }
 }
 
 function saveSetting(key, value) {
-  localStorage.setItem(key, String(value));
+  try {
+    localStorage.setItem(key, String(value));
+  } catch (error) {
+    console.warn("Не удалось сохранить настройку:", error);
+  }
 }
 
 soundToggle.checked = readSetting("pixelopoly-sound", false);
 animationToggle.checked = readSetting("pixelopoly-animation", true);
 
-openSettingsButton.addEventListener("click", () => {
-  settingsDialog.showModal();
-});
+if (openSettingsButton && settingsDialog) {
+  openSettingsButton.addEventListener("click", () => {
+    settingsDialog.showModal();
+  });
+}
+
+if (settingsDialog) {
+  settingsDialog.addEventListener("click", (event) => {
+    if (event.target === settingsDialog) settingsDialog.close();
+  });
+}
 
 soundToggle.addEventListener("change", () => {
   saveSetting("pixelopoly-sound", soundToggle.checked);
@@ -42,6 +59,7 @@ soundToggle.addEventListener("change", () => {
 
 animationToggle.addEventListener("change", () => {
   saveSetting("pixelopoly-animation", animationToggle.checked);
+
   if (animationToggle.checked) {
     startAnimation();
   } else {
@@ -115,46 +133,49 @@ function showStaticScene() {
   mage.style.opacity = "1";
 }
 
-async function runAnimation() {
+function stillActive(runId) {
+  return animationToggle.checked && runId === animationRunId;
+}
+
+async function pause(ms, runId) {
+  await sleep(ms);
+  return stillActive(runId);
+}
+
+async function runAnimation(runId) {
   resetScene();
   scene.classList.add("is-running");
 
   setDragon("ad-1");
-  await sleep(900);
-  if (!animationToggle.checked) return;
+  if (!(await pause(900, runId))) return;
   setDragon("ad-2");
 
-  // Дракон выпускает огонь.
-  await sleep(850);
-  if (!animationToggle.checked) return;
+  if (!(await pause(850, runId))) return;
   setDragon("ad-3");
-  await sleep(1250);
-  if (!animationToggle.checked) return;
+  if (!(await pause(1250, runId))) return;
   setDragon("ad-4");
 
-  await sleep(650);
-  if (!animationToggle.checked) return;
+  if (!(await pause(650, runId))) return;
   setMage("am-1");
-  await sleep(350);
+  if (!(await pause(350, runId))) return;
   setMage("am-2");
-  await sleep(350);
+  if (!(await pause(350, runId))) return;
   setMage("am-3");
-  await sleep(350);
+  if (!(await pause(350, runId))) return;
   setMage("am-4");
-  await sleep(350);
+  if (!(await pause(350, runId))) return;
   setMage("am-5");
 
-  await sleep(350);
-  if (!animationToggle.checked) return;
+  if (!(await pause(350, runId))) return;
   setProjectile("af-1");
   projectile.classList.add("is-flying");
   playMagicSound();
 
-  await sleep(280);
+  if (!(await pause(280, runId))) return;
   setProjectile("af-2");
-  await sleep(300);
+  if (!(await pause(300, runId))) return;
   setProjectile("af-3");
-  await sleep(420);
+  if (!(await pause(420, runId))) return;
 
   projectile.classList.remove("is-flying");
   projectile.style.opacity = "0";
@@ -162,8 +183,7 @@ async function runAnimation() {
   setDragon("ad-5");
   playMagicSound();
 
-  await sleep(550);
-  if (!animationToggle.checked) return;
+  if (!(await pause(550, runId))) return;
   setDragon("ad-6");
   dragon.classList.remove("is-hit");
   dragon.classList.add("is-defeated");
@@ -172,35 +192,38 @@ async function runAnimation() {
   mage.classList.add("is-victorious");
   victoryEffects.classList.add("is-visible");
 
-  await sleep(2600);
+  await pause(2600, runId);
 }
 
-async function animationLoop() {
-  while (animationToggle.checked) {
-    await runAnimation();
-    if (!animationToggle.checked) break;
-    await sleep(900);
+async function animationLoop(runId) {
+  while (stillActive(runId)) {
+    await runAnimation(runId);
+    if (!stillActive(runId)) break;
+    if (!(await pause(900, runId))) break;
   }
 }
 
 function startAnimation() {
   stopAnimation();
+  const runId = animationRunId;
+
   animationTimer = window.setTimeout(() => {
-    animationLoop();
+    animationTimer = null;
+    animationLoop(runId);
   }, 250);
 }
 
 function stopAnimation() {
-  if (animationTimer) {
+  if (animationTimer !== null) {
     window.clearTimeout(animationTimer);
     animationTimer = null;
   }
+  animationRunId += 1;
 }
 
-if (animationToggle.checked && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if (animationToggle.checked) {
   startAnimation();
 } else {
-  animationToggle.checked = false;
   showStaticScene();
 }
 
