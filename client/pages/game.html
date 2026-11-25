@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixelopoly — игровое поле</title>
+<link rel="stylesheet" href="../css/game.css">
+<link rel="stylesheet" href="../css/game-connection-patch.css">
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="../js/game.js" type="module" defer></script>
+</head>
+<body>
+<main class="game-page">
+<header class="game-header"><a class="game-logo" href="main.html">✦ PIXELOPOLY</a><div class="room-code"><span class="room-code__label">КОД ИГРЫ</span><strong id="room-code">----</strong><button class="small-wood-button" id="copy-code" type="button">⧉</button></div><a class="exit-button" href="main.html">Выйти</a></header>
+<section class="game-layout">
+<aside class="side-panel players-panel"><div class="panel-heading">✦ ИГРОКИ ✦</div><div class="player-list" id="player-list"></div><div class="players-note">Партия начнётся, когда все игроки будут готовы.</div></aside>
+<section class="board-wrap"><div class="board-frame"><div class="game-board" id="game-board"><div class="board-center"><div class="center-emblem">✦</div><h1>PIXЕLOPOLY</h1><p class="center-subtitle">ПРИКЛЮЧЕНИЕ НАЧИНАЕТСЯ</p><div class="center-divider"></div><p class="center-message" id="center-message">Подключаемся к комнате…</p><div class="center-status" id="center-status">СОЕДИНЕНИЕ</div><div class="center-players" id="center-players">◌ ◌ ◌ ◌</div></div></div></div><div class="board-caption">⚑ ПУТЕШЕСТВУЙ • СОБИРАЙ • ПОБЕЖДАЙ ⚑</div></section>
+<aside class="side-panel action-panel"><div class="panel-heading">✦ ВАШ ГЕРОЙ ✦</div><p class="choose-caption">Выберите персонажа-фишку:</p>
+<div class="character-choices" id="character-choices">
+<button class="character-choice" data-character="Следопыт" type="button"><img src="../../img/all/RPG 1.png" alt=""><span>Следопыт</span></button>
+<button class="character-choice" data-character="Археолог" type="button"><img src="../../img/all/RPG 2.png" alt=""><span>Археолог</span></button>
+<button class="character-choice" data-character="Пират" type="button"><img src="../../img/all/RPG 3.png" alt=""><span>Пират</span></button>
+<button class="character-choice" data-character="Маг" type="button"><img src="../../img/all/RPG 4.png" alt=""><span>Маг</span></button></div>
+<div class="ready-box"><div class="ready-heading">ГОТОВНОСТЬ</div><p id="ready-description">Выбери персонажа и подтверди готовность.</p><button class="wood-button" id="ready-button" type="button" disabled>ГОТОВ</button><span class="ready-hint" id="ready-hint">Ожидаем игроков…</span></div>
+<div class="turn-box" id="turn-box" hidden><div class="ready-heading">ВАШ ХОД</div><div class="dice-pair"><span id="die-one">⚀</span><span id="die-two">⚀</span></div><button class="wood-button" id="roll-button" type="button">БРОСИТЬ КУБИКИ</button><button class="wood-button" id="buy-button" type="button" hidden>КУПИТЬ КЛЕТКУ</button><button class="wood-button" id="end-turn-button" type="button" hidden>ЗАВЕРШИТЬ ХОД</button><p id="turn-message">Ожидаем начала партии.</p></div><p id="game-notice" class="players-note" aria-live="polite"></p>
+</aside></section>
+<footer class="game-footer"><span>PIXЕLOPOLY</span><span>Мир приключений ждёт своего героя</span><a href="main.html">На главную ↑</a></footer>
+</main></body></html>

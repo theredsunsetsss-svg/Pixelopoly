@@ -1,0 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Slab:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --sky-top: #315fa5;
+  --sky-bottom: #9ac5e9;
+  --wood-light: #dca45e;
+  --wood-mid: #a96532;
+  --wood-dark: #59351f;
+  --cream: #fff0cf;
+  --ink: #291b18;
+  --green: #607b3e;
+  --green-dark: #344b2d;
+  --pixel-border: 4px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Roboto Slab", Georgia, serif;
+  background: #31577a url("../../img/main/main-bg.png") center top / 100% auto repeat-y;
+  overflow-x: hidden;
+}
+
+button, a { font: inherit; }
+
+.game-page {
+  width: min(1600px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 16px clamp(12px, 2vw, 28px) 22px;
+  background: linear-gradient(180deg, rgba(20, 43, 56, .15), rgba(20, 35, 27, .25));
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 66px;
+  margin-bottom: 18px;
+  padding: 10px 16px;
+  background: rgba(61, 42, 31, .88);
+  border: 4px solid #38251d;
+  box-shadow: inset 0 0 0 3px #dca45e, 0 5px 0 rgba(35, 27, 34, .35);
+}
+
+.game-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cream);
+  text-decoration: none;
+  font: 12px "Press Start 2P", monospace;
+  text-shadow: 3px 3px #291b18;
+}
+
+.game-logo__dice { color: #ffe49a; font-size: 25px; }
+
+.room-code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  color: var(--ink);
+  background: #f4d99e;
+  border: 3px solid #6c4029;
+  box-shadow: inset 0 0 0 2px #fff0cf;
+}
+
+.room-code__label {
+  font: 8px "Press Start 2P", monospace;
+}
+
+.room-code strong {
+  color: #754329;
+  font: 14px "Press Start 2P", monospace;
+  letter-spacing: 2px;
+}
+
+.small-wood-button, .exit-button {
+  border: 2px solid #40271d;
+  color: #fff0cf;
+  background: #986039;
+  box-shadow: inset 0 0 0 2px #dca45e, 2px 3px 0 #38251d;
+  cursor: pointer;
+}
+
+.small-wood-button { min-width: 30px; min-height: 28px; font-size: 18px; }
+.exit-button { padding: 9px 13px; text-decoration: none; font-weight: 800; }
+
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(205px, 245px) minmax(420px, 1fr) minmax(205px, 245px);
+  align-items: start;
+  gap: 18px;
+}
+
+.side-panel {
+  padding: 13px;
+  background: rgba(255, 239, 202, .94);
+  border: 4px solid #57351f;
+  box-shadow: inset 0 0 0 3px #dca45e, 5px 6px 0 rgba(36, 25, 20, .35);
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 5px;
+  color: #fff0cf;
+  background: #75472b;
+  border: 3px solid #3f281d;
+  box-shadow: inset 0 0 0 2px #c88c4d;
+  font: 9px "Press Start 2P", monospace;
+  text-align: center;
+}
+
+.panel-heading span { color: #f6d98a; }
+
+.player-list { display: grid; gap: 9px; margin-top: 13px; }
+
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 9px 7px;
+  background: #fff4d9;
+  border: 2px solid #a66d3d;
+  box-shadow: 2px 3px 0 rgba(72, 43, 26, .2);
+}
+
+.player-card.is-you { background: #e9efcf; border-color: #647d3f; }
+.player-card.is-empty { opacity: .7; }
+.player-card.is-ready { background: #e1edc8; border-color: #55783a; }
+
+.character-choices {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.character-choice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 5px;
+    color: #533923;
+    background: #f8edcf;
+    border: 3px solid #b78a55;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    transition: .2s;
+}
+
+.character-choice img {
+    width: 75px;
+    height: 85px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.character-choice:hover {
+    background: #e9e5bd;
+    transform: translateY(-3px);
+}
+
+.character-choice.is-selected {
+    background: #e2e9c5;
+    border-color: #607b3e;
+    box-shadow: 0 0 0 2px #c7d59c;
+}
+
+.player-avatar {
+    width: 55px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.player-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.avatar-explorer { --avatar-hair: #5d6c3e; --avatar-clothes: #657b43; }
+.avatar-archaeologist { --avatar-hair: #9b7048; --avatar-clothes: #c18b4d; }
+.avatar-pirate { --avatar-hair: #343b4c; --avatar-clothes: #8e3f36; }
+.avatar-mage { --avatar-hair: #454b80; --avatar-clothes: #6563a0; }
+.avatar-mage::before { box-shadow: -5px -10px 0 #6563a0, 5px -10px 0 #6563a0; }
+
+.player-info { display: grid; gap: 3px; min-width: 0; flex: 1; }
+.player-info strong { font-size: 13px; }
+.player-character { color: #6c482d; font-size: 11px; }
+.player-status { color: #7b7564; font-size: 10px; }
+.player-coins { color: #68411f; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.player-coins b { color: #d69b26; }
+
+.players-note {
+  margin-top: 13px;
+  padding: 10px;
+  color: #67452d;
+  background: #ead4a8;
+  border: 2px dashed #a87945;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.board-wrap { min-width: 0; }
+
+.board-frame {
+  padding: 10px;
+  background: #57351f;
+  border: 4px solid #38251d;
+  box-shadow: inset 0 0 0 3px #dca45e, 6px 7px 0 rgba(36, 25, 20, .4);
+}
+
+.game-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  grid-template-rows: repeat(11, minmax(55px, 1fr));
+  gap: 3px;
+  aspect-ratio: 1;
+  padding: 4px;
+  background: #9b7148;
+  border: 3px solid #dca45e;
+}
+
+.board-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 5px 3px;
+  overflow: hidden;
+  color: #34251c;
+  background: #f4e5bf;
+  border: 2px solid #765033;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
+}
+
+.board-cell__type {
+  font: 6px "Press Start 2P", monospace;
+  line-height: 1.6;
+  color: #765033;
+}
+
+.board-cell strong { font-size: clamp(7px, .72vw, 10px); line-height: 1.2; }
+.board-cell__price { font-size: 9px; font-weight: 800; color: #75502f; }
+.board-cell--corner { background: #e5c27c; }
+.board-cell--event { background: #e6d4a7; }
+.board-cell--start { background: #d5dfa9; }
+.board-cell--jail { background: #d6c4a9; }
+.board-cell--territory .color-strip { height: 7px; margin: -5px -3px 3px; background: var(--tile-color, #8b9b63); }
+.board-cell--corner strong { font: 8px "Press Start 2P", monospace; line-height: 1.7; }
+.board-cell.is-highlighted { outline: 3px solid #f4d15f; outline-offset: -4px; }
+
+.board-center {
+  grid-column: 2 / 11;
+  grid-row: 2 / 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 16px;
+  color: #fff0cf;
+  background: linear-gradient(rgba(35, 54, 45, .79), rgba(43, 54, 39, .88)), url("../../img/main/main-bg.png") center / cover;
+  border: 4px solid #6b482d;
+  text-align: center;
+  text-shadow: 2px 3px #291b18;
+}
+
+.center-emblem { color: #f6d98a; font-size: clamp(22px, 4vw, 48px); }
+.board-center h1 { margin: 9px 0; font: clamp(13px, 1.7vw, 22px) "Press Start 2P", monospace; line-height: 1.8; }
+.center-subtitle { margin: 0; color: #f6d98a; font: 7px "Press Start 2P", monospace; line-height: 1.8; }
+.center-divider { width: 55%; height: 4px; margin: 17px 0; background: #dca45e; box-shadow: 0 3px #38251d; }
+.center-message { max-width: 360px; margin: 0 0 13px; font-size: 14px; line-height: 1.5; }
+.center-status { padding: 9px 12px; color: #38251d; background: #f4d28e; border: 3px solid #59351f; font: 8px "Press Start 2P", monospace; line-height: 1.8; }
+.center-players { margin-top: 14px; color: #f4d28e; letter-spacing: 8px; }
+
+.board-caption {
+  margin-top: 12px;
+  color: #fff0cf;
+  text-align: center;
+  font: 8px "Press Start 2P", monospace;
+  text-shadow: 2px 2px #38251d;
+}
+.board-caption span { color: #f6d98a; }
+
+.choose-caption { margin: 13px 0 9px; color: #6a482f; font-size: 12px; font-weight: 700; }
+.character-choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.character-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 8px 3px;
+  color: #533923;
+  background: #f8edcf;
+  border: 2px solid #b78a55;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+.character-choice.is-selected { background: #e2e9c5; border: 3px solid #607b3e; padding: 7px 2px; box-shadow: 0 0 0 2px #c7d59c; }
+.choice-avatar { width: 47px; height: 52px; }
+.ready-box, .turn-box { margin-top: 16px; padding: 12px 9px; background: #ead5a9; border: 3px solid #9c6a3e; text-align: center; }
+.ready-heading { color: #704326; font: 8px "Press Start 2P", monospace; line-height: 1.8; }
+.ready-box p, .turn-box p { margin: 8px 0 10px; color: #694b31; font-size: 11px; line-height: 1.5; }
+.wood-button {
+  width: 100%;
+  padding: 12px 8px;
+  color: #fff0cf;
+  background: #8c542f;
+  border: 3px solid #40271d;
+  box-shadow: inset 0 0 0 3px #dca45e, 3px 4px 0 #54331f;
+  cursor: pointer;
+  font: 9px "Press Start 2P", monospace;
+  line-height: 1.8;
+  text-shadow: 2px 2px #38251d;
+  transition: transform .15s ease, filter .15s ease;
+}
+.wood-button:hover { filter: brightness(1.12); transform: translateY(-2px); }
+.wood-button:active { transform: translateY(2px); box-shadow: inset 0 0 0 3px #dca45e, 1px 2px 0 #54331f; }
+.wood-button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.ready-button.is-ready { background: #58713b; }
+.ready-hint { display: block; margin-top: 9px; color: #765338; font-size: 10px; }
+.dice-pair { display: flex; justify-content: center; gap: 15px; margin: 13px 0; }
+.dice-pair span { display: grid; place-items: center; width: 43px; height: 43px; color: #5b3a25; background: #fff4d9; border: 3px solid #704326; box-shadow: 3px 3px #a87945; font-size: 28px; }
+
+.game-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 22px;
+  padding: 13px 17px;
+  color: #fff0cf;
+  background: rgba(61, 42, 31, .9);
+  border: 3px solid #38251d;
+  box-shadow: inset 0 0 0 2px #dca45e;
+  font-size: 11px;
+}
+.game-footer span:first-child { font: 8px "Press Start 2P", monospace; }
+.game-footer a { color: #f6d98a; }
+
+@media (max-width: 1050px) {
+  .game-layout { grid-template-columns: 1fr 1fr; }
+  .board-wrap { grid-column: 1 / -1; grid-row: 1; }
+  .players-panel { grid-column: 1; }
+  .action-panel { grid-column: 2; }
+  .game-board { grid-template-rows: repeat(11, minmax(48px, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .game-page { padding: 8px; }
+  .game-header { flex-wrap: wrap; justify-content: center; padding: 9px; }
+  .game-logo { font-size: 9px; }
+  .room-code { order: 3; }
+  .exit-button { margin-left: auto; }
+  .game-layout { grid-template-columns: 1fr; gap: 13px; }
+  .board-wrap, .players-panel, .action-panel { grid-column: 1; }
+  .board-wrap { grid-row: 1; }
+  .game-board { grid-template-rows: repeat(11, minmax(30px, 1fr)); gap: 2px; padding: 2px; }
+  .board-frame { padding: 5px; }
+  .board-cell { padding: 2px 1px; border-width: 1px; }
+  .board-cell__type { font-size: 4px; }
+  .board-cell strong { font-size: 6px; }
+  .board-cell__price { font-size: 6px; }
+  .board-cell--corner strong { font-size: 5px; }
+  .board-cell--territory .color-strip { height: 4px; margin: -2px -1px 2px; }
+  .board-center { padding: 5px; border-width: 2px; }
+  .center-emblem { font-size: 19px; }
+  .board-center h1 { font-size: 9px; }
+  .center-subtitle { font-size: 4px; }
+  .center-divider { margin: 7px 0; height: 2px; }
+  .center-message { margin-bottom: 5px; font-size: 9px; }
+  .center-status { padding: 4px; font-size: 5px; border-width: 2px; }
+  .center-players { margin-top: 5px; font-size: 10px; }
+  .players-panel { order: 2; }
+  .action-panel { order: 3; }
+  .game-footer { flex-wrap: wrap; justify-content: center; text-align: center; }
+}
+
+.game-header,
+.game-footer {
+    background:
+        linear-gradient(rgba(75, 43, 25, .25), rgba(75, 43, 25, .25)),
+        url("../../img/all/wood-texture.png") center / cover;
+}
+
+.panel-heading {
+    background:
+        linear-gradient(rgba(75, 43, 25, .2), rgba(75, 43, 25, .2)),
+        url("../../img/all/wood-texture.png") center / cover;
+}
+
+.ready-box {
+    background:
+        linear-gradient(rgba(255, 225, 174, .35), rgba(255, 225, 174, .35)),
+        url("../../img/all/wood-texture.png") center / cover;
+}
+
+.dice-pair span.is-rolling { animation: dice-shake .18s infinite; }
+.dice-pair span.is-bounce  { animation: dice-bounce .35s ease; }
+
+@keyframes dice-shake {
+  0%,100% { transform: translate(0,0) rotate(0); }
+  25%     { transform: translate(-3px,2px) rotate(-12deg); }
+  50%     { transform: translate(3px,-2px) rotate(8deg); }
+  75%     { transform: translate(-2px,-1px) rotate(-6deg); }
+}
+@keyframes dice-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35) translateY(-8px); }
+  70%  { transform: scale(.92); }
+  100% { transform: scale(1); }
+}

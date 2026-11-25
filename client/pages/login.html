@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pixelopoly — игра</title><link rel="stylesheet" href="../css/extra-pages.css"><script src="../js/login.js" defer></script></head>
+<body><main class="shell"><header class="top"><a href="main.html">✦ PIXELOPOLY</a><a href="main.html">На главную</a></header>
+<section class="panel"><h1>ПРИКЛЮЧЕНИЕ НАЧИНАЕТСЯ</h1><p class="lead">Выбери, как хочешь начать игру</p>
+<label>Имя игрока<input id="player-name" maxlength="20" placeholder="Твоё имя"></label>
+<div class="tabs"><button class="active" data-tab="create">Создать комнату</button><button data-tab="join">Войти по коду</button></div>
+<form id="create-form"><label>Название комнаты<input id="room-title" value="Моё приключение" maxlength="30"></label><div class="grid">
+<label>Игроков<select id="max-players"><option>2</option><option>3</option><option selected>4</option></select></label>
+<label>Лимит ходов<input id="max-turns" type="number" min="10" max="200" value="50"></label>
+<label>Стартовые монеты<input id="start-money" type="number" min="500" max="5000" step="100" value="1500"></label>
+<label>Штраф тюрьмы<input id="jail-fine" type="number" min="0" max="2000" step="50" value="500"></label></div><button class="action" type="submit">СОЗДАТЬ КОМНАТУ</button></form>
+<form id="join-form" hidden><label>Код комнаты<input id="room-code" maxlength="6" placeholder="A1B2C3"></label><button class="action" type="submit">ПРИСОЕДИНИТЬСЯ</button></form>
+<p id="message" class="message"></p><div class="note">От 2 до 4 игроков. Игра начнётся, когда все подключившиеся участники выберут героя и нажмут «Готов».</div></section>
+<footer>© 2026 PIXELOPOLY · ИГРАЙ. ИССЛЕДУЙ. ПОБЕЖДАЙ.</footer></main></body></html>

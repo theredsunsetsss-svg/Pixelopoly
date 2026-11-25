@@ -1,253 +1,328 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#244b86">
-  <title>Pixelopoly — главная</title>
-  <link rel="stylesheet" href="../css/main.css">
-  <script src="../js/main.js" defer></script>
-  <link rel="icon" type="image/png" href="../../img/main/icon.png">
-</head>
-<body>
-  <main class="landing">
-    <header class="site-header">
-      <a class="brand" href="main.html" aria-label="Pixelopoly — главная">
-        <span class="brand__dice" aria-hidden="true">✦</span>
-        <span class="brand__name">Pixelopoly</span>
-        <span class="brand__tagline">Играй. Исследуй. Побеждай!</span>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="#244b86" name="theme-color"/>
+  <title>
+   Pixelopoly — главная
+  </title>
+  <link href="../css/main.css" rel="stylesheet"/>
+  <script defer="" src="../js/main.js">
+  </script>
+  <link href="../../img/main/icon.png" rel="icon" type="image/png"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js" type="module">
+  </script>
+ </head>
+ <body>
+  <main class="landing" id="top">
+   <header class="site-header">
+    <a aria-label="Pixelopoly — главная" class="brand" href="main.html">
+     <span aria-hidden="true" class="brand__dice">
+      ✦
+     </span>
+     <span class="brand__name">
+      Pixelopoly
+     </span>
+     <span class="brand__tagline">
+      Играй. Исследуй. Побеждай!
+     </span>
+    </a>
+    <a aria-label="Войти в аккаунт" class="account-button" href="login.html" title="Аккаунт">
+     <img alt="" src="../../img/all/btn-k.png"/>
+     <span class="account-button__label">
+      Аккаунт
+     </span>
+    </a>
+   </header>
+   <section aria-label="Главное меню Pixelopoly" class="hero-content">
+    <div class="menu-panel">
+     <nav aria-label="Главное меню" class="main-menu">
+      <a class="menu-button" href="login.html">
+       <img alt="" src="../../img/all/btn-s.png"/>
+       <span>
+        Играть
+       </span>
       </a>
-
-      <a class="account-button" href="login.html" aria-label="Войти в аккаунт" title="Аккаунт">
-        <img src="../../img/all/btn-k.png" alt="">
-        <span class="account-button__label">Аккаунт</span>
+      <a class="menu-button" href="rating.html">
+       <img alt="" src="../../img/all/btn-k.png"/>
+       <span>
+        Рейтинг
+       </span>
       </a>
-    </header>
-
-    <section class="hero-content" aria-label="Главное меню Pixelopoly">
-      <div class="menu-panel">
-
-
-        <nav class="main-menu" aria-label="Главное меню">
-          <a class="menu-button" href="login.html">
-            <img src="../../img/all/btn-s.png" alt="">
-            <span>Играть</span>
-          </a>
-
-          <a class="menu-button" href="rating.html">
-            <img src="../../img/all/btn-k.png" alt="">
-            <span>Рейтинг</span>
-          </a>
-
-          <a class="menu-button" href="rules.html">
-            <img src="../../img/all/btn-k.png" alt="">
-            <span>Правила</span>
-          </a>
-
-          <button class="menu-button" id="open-settings" type="button">
-            <img src="../../img/all/btn-q.png" alt="">
-            <span>Настройки</span>
-          </button>
-        </nav>
-      </div>
-    </section>
-
-    <section class="battle-scene" id="battle-scene" aria-label="Маг сражается с драконом">
-      <div class="scene-sparkles" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
-
-      <img
-        class="character character--mage"
-        id="mage"
-        src="../../img/main/am-1.png"
-        alt="Фиолетовый маг"
-        draggable="false"
-      >
-
-      <img
-        class="projectile"
-        id="projectile"
-        src="../../img/main/af-1.png"
-        alt=""
-        aria-hidden="true"
-        draggable="false"
-      >
-
-      <img
-        class="character character--dragon"
-        id="dragon"
-        src="../../img/main/ad-1.png"
-        alt="Красный дракон"
-        draggable="false"
-      >
-
-      <div class="victory-effects" id="victory-effects" aria-hidden="true">
-        <img src="../../img/all/trophy.gif" class="victory-trophy" alt="">
-      </div>
-    </section>
-
-    <section class="about-section">
-
-    <div class="about-panel">
-        <div class="section-heading">
-            <span class="heading-decoration">✦</span>
-            <h2>Добро пожаловать в Pixelopoly!</h2>
-            <span class="heading-decoration">✦</span>
-        </div>
-
-        <p class="about-description">
-            Pixelopoly — многопользовательская экономическая
-            игра, вдохновлённая классической Монополией.
-            Создавай собственную империю, приобретай
-            территории, соревнуйся с друзьями и докажи,
-            что именно ты достоин стать правителем королевства!
-        </p>
-
-        <img
-            src="../../img/main/kingdom.png"
-            class="kingdom-image"
-            alt="Пиксельное фэнтезийное королевство"
-        >
-
-        <div class="about-bottom">
-            Твоя история начинается с первого броска кубиков...
-        </div>
+      <a class="menu-button" href="rules.html">
+       <img alt="" src="../../img/all/btn-k.png"/>
+       <span>
+        Правила
+       </span>
+      </a>
+      <button class="menu-button" id="open-settings" type="button">
+       <img alt="" src="../../img/all/btn-q.png"/>
+       <span>
+        Настройки
+       </span>
+      </button>
+     </nav>
     </div>
-
-
-    <section class="how-section">
-
-        <div class="section-heading">
-            <span class="heading-decoration">✦</span>
-            <h2>Как играть?</h2>
-            <span class="heading-decoration">✦</span>
-        </div>
-
-        <p class="section-subtitle">
-            Четыре шага к собственной империи
+   </section>
+   <section aria-label="Маг сражается с драконом" class="battle-scene" id="battle-scene">
+    <div aria-hidden="true" class="scene-sparkles">
+     <i>
+     </i>
+     <i>
+     </i>
+     <i>
+     </i>
+     <i>
+     </i>
+     <i>
+     </i>
+     <i>
+     </i>
+    </div>
+    <img alt="Фиолетовый маг" class="character character--mage" draggable="false" id="mage" src="../../img/main/am-1.png"/>
+    <img alt="" aria-hidden="true" class="projectile" draggable="false" id="projectile" src="../../img/main/af-1.png"/>
+    <img alt="Красный дракон" class="character character--dragon" draggable="false" id="dragon" src="../../img/main/ad-1.png"/>
+    <div aria-hidden="true" class="victory-effects" id="victory-effects">
+     <img alt="" class="victory-trophy" src="../../img/all/trophy.gif"/>
+    </div>
+   </section>
+   <section class="about-section">
+    <section class="kingdom-intro">
+     <div class="intro-heading">
+      <span>
+       ✦
+      </span>
+      <h2>
+       Добро пожаловать в Pixelopoly!
+      </h2>
+      <span>
+       ✦
+      </span>
+     </div>
+     <p class="intro-description">
+      Pixelopoly — многопользовательская экономическая игра,
+            вдохновлённая классической Монополией.
+            Покупай территории, собирай богатство, соревнуйся
+            с друзьями и стань настоящим правителем королевства!
+     </p>
+     <div class="kingdom-banner">
+      <img alt="Пиксельное фэнтезийное королевство с замком и игровым полем" src="../../img/main/main-banner.png"/>
+      <span class="banner-decoration banner-decoration--left">
+       ✦
+      </span>
+      <span class="banner-decoration banner-decoration--right">
+       ✦
+      </span>
+     </div>
+     <div class="intro-caption">
+      <span>
+       ⚔
+      </span>
+      Твоя история начинается с первого броска кубиков...
+      <span>
+       ⚔
+      </span>
+     </div>
+    </section>
+    
+    <section class="journey-section" id="rules">
+     <div class="section-heading">
+      <span class="heading-decoration">
+       ✦
+      </span>
+      <h2>
+       Твой путь к победе
+      </h2>
+      <span class="heading-decoration">
+       ✦
+      </span>
+     </div>
+     <p class="section-subtitle">
+      Пройди все этапы, чтобы стать хозяином королевства
+     </p>
+     <div class="journey-map">
+      <article class="journey-step journey-step--one">
+       <span class="journey-number">
+        01
+       </span>
+       <div class="journey-icon">
+        <img alt="" src="../../img/main/dice.png"/>
+       </div>
+       <div class="journey-text">
+        <h3>
+         Бросай кубики
+        </h3>
+        <p>
+         Начни игру, бросай кубики и перемещайся
+                        по игровому полю.
         </p>
-
-        <div class="steps-grid">
-
-            <article class="step-card">
-                <img src="../../img/all/icon-dice.png" alt="">
-                <span class="step-number">01</span>
-                <h3>Бросай кубики</h3>
-                <p>Перемещайся по игровому полю и исследуй королевство.</p>
-            </article>
-
-            <article class="step-card">
-                <img src="../../img/all/icon-land.png" alt="">
-                <span class="step-number">02</span>
-                <h3>Покупай земли</h3>
-                <p>Приобретай свободные территории и расширяй владения.</p>
-            </article>
-
-            <article class="step-card">
-                <img src="../../img/all/icon-coins.png" alt="">
-                <span class="step-number">03</span>
-                <h3>Управляй богатством</h3>
-                <p>Следи за балансом и принимай выгодные решения.</p>
-            </article>
-
-            <article class="step-card">
-                <img src="../../img/all/icon-crown.png" alt="">
-                <span class="step-number">04</span>
-                <h3>Стань победителем</h3>
-                <p>Используй стратегию, чтобы обойти соперников.</p>
-            </article>
-
-        </div>
+       </div>
+      </article>
+      <article class="journey-step journey-step--two">
+       <span class="journey-number">
+        02
+       </span>
+       <div class="journey-icon">
+        <img alt="" src="../../img/main/map.png"/>
+       </div>
+       <div class="journey-text">
+        <h3>
+         Покупай территории
+        </h3>
+        <p>
+         Приобретай свободные участки и постепенно
+                        расширяй свои владения.
+        </p>
+       </div>
+      </article>
+      <article class="journey-step journey-step--three">
+       <span class="journey-number">
+        03
+       </span>
+       <div class="journey-icon">
+        <img alt="" src="../../img/main/coin.png"/>
+       </div>
+       <div class="journey-text">
+        <h3>
+         Управляй богатством
+        </h3>
+        <p>
+         Следи за своими средствами и продумывай
+                        каждый следующий ход.
+        </p>
+       </div>
+      </article>
+      <article class="journey-step journey-step--four">
+       <span class="journey-number">
+        04
+       </span>
+       <div class="journey-icon">
+        <img alt="" src="../../img/main/crown.png"/>
+       </div>
+       <div class="journey-text">
+        <h3>
+         Стань победителем
+        </h3>
+        <p>
+         Используй стратегию, обойди соперников
+                        и завоюй корону!
+        </p>
+       </div>
+      </article>
+     </div>
+      
+     <div class="finish-banner">
+    <img src="../../img/main/finish.png" alt="Финиш" class="finish-image">
+    </div>
+     </div>
+     <div class="rules-dice">
+      <div class="rules-dice__info">
+       <span class="rules-dice__label">
+        ИСПЫТАЙ УДАЧУ
+       </span>
+       <h3>
+        Покрути кубик!
+       </h3>
+       <p>
+        Перетаскивай кубик мышкой, чтобы рассмотреть его со всех сторон.
+       </p>
+      </div>
+      <model-viewer alt="Интерактивная 3D-модель игрального кубика" auto-rotate="" camera-controls="" class="rules-dice__model" environment-image="neutral" exposure="1" interaction-prompt="none" ios-src="../../img/all/dice.usdz" rotation-per-second="18deg" shadow-intensity="1" src="../../img/all/dice.glb">
+      </model-viewer>
+     </div>
     </section>
-
-    <section class="features-section">
-
-        <div class="section-heading">
-            <span class="heading-decoration">✦</span>
-            <h2>Возможности Pixelopoly</h2>
-            <span class="heading-decoration">✦</span>
-        </div>
-
-        <div class="features-grid">
-
-            <article class="feature-card">
-                <img src="../../img/all/main-.png" alt="">
-                <div>
-                    <h3>Игровые комнаты</h3>
-                    <p>Создавай собственные партии и приглашай друзей.</p>
-                </div>
-            </article>
-
-            <article class="feature-card">
-                <img src="../../img/all/main-k.png" alt="">
-                <div>
-                    <h3>Рейтинг игроков</h3>
-                    <p>Следи за достижениями и сравнивай результаты.</p>
-                </div>
-            </article>
-
-            <article class="feature-card">
-                <img src="../../img/all/icon-land.png" alt="">
-                <div>
-                    <h3>Личный аккаунт</h3>
-                    <p>Управляй своим профилем и игровыми данными.</p>
-                </div>
-            </article>
-
-            <article class="feature-card">
-                <img src="../../img/all/icon-dice.png" alt="">
-                <div>
-                    <h3>Правила игры</h3>
-                    <p>Изучай механику и игровые возможности.</p>
-                </div>
-            </article>
-
-        </div>
-
-    </section>
-
-</section>
-
-    <footer class="site-footer">
-      <span>© 2026 Pixelopoly</span>
-      <span class="site-footer__status"><i></i> Мир открыт для приключений</span>
-    </footer>
+   </section>
+   <footer class="site-footer">
+    <div class="footer-column">
+     <h3>
+      🎲 PIXELOPOLY
+     </h3>
+     <p>
+      Добро пожаловать в мир Pixelopoly —
+            пиксельную настольную игру, где стратегия,
+            удача и приключения встречаются на одном поле.
+     </p>
+    </div>
+    <div class="footer-column">
+     <h3>
+      Навигация
+     </h3>
+     <a href="#top">
+      Главная
+     </a>
+     <a href="#features">
+      Возможности
+     </a>
+     <a href="#rules">
+      Правила игры
+     </a>
+    </div>
+    <div class="footer-column">
+     <h3>
+      Об игре
+     </h3>
+     <p>
+      Создавай стратегию, покупай территории,
+        собирай ресурсы и соревнуйся с другими игроками.
+     </p>
+     <p>
+      Каждый ход может изменить ход партии!
+     </p>
+    </div>
+    <div class="footer-bottom">
+     <span>
+      © 2026 Pixelopoly. Все права защищены.
+     </span>
+     <span class="site-footer__status">
+      <i>
+      </i>
+      Игровой мир открыт
+     </span>
+    </div>
+   </footer>
   </main>
-
   <dialog class="settings-dialog" id="settings-dialog">
-    <form method="dialog" class="settings-window">
-
-        <button class="settings-close" aria-label="Закрыть настройки" value="close">×</button>
-
-        <div class="settings-window__heading">
-            <span>⚙</span>
-            <h2 id="settings-title">Настройки</h2>
-        </div>
-
-        <label class="setting-row">
-            <span>
-                <strong>Звуковые эффекты</strong>
-                <small>Звуки магии и игровых действий</small>
-            </span>
-            <input type="checkbox" id="sound-toggle">
-        </label>
-
-        <label class="setting-row">
-            <span>
-                <strong>Анимация персонажей</strong>
-                <small>Сцена с магом и драконом на главной</small>
-            </span>
-            <input type="checkbox" id="animation-toggle" checked>
-        </label>
-
-        <div class="settings-window__actions">
-            <button class="wood-button wood-button--primary" value="save">
-                Готово
-            </button>
-        </div>
-
-    </form>
-</dialog>
-</body>
+   <form class="settings-window" method="dialog">
+    <button aria-label="Закрыть настройки" class="settings-close" value="close">
+     ×
+    </button>
+    <div class="settings-window__heading">
+     <span>
+      ⚙
+     </span>
+     <h2 id="settings-title">
+      Настройки
+     </h2>
+    </div>
+    <label class="setting-row">
+     <span>
+      <strong>
+       Звуковые эффекты
+      </strong>
+      <small>
+       Звуки магии и игровых действий
+      </small>
+     </span>
+     <input id="sound-toggle" type="checkbox"/>
+    </label>
+    <label class="setting-row">
+     <span>
+      <strong>
+       Анимация персонажей
+      </strong>
+      <small>
+       Сцена с магом и драконом на главной
+      </small>
+     </span>
+     <input checked="" id="animation-toggle" type="checkbox"/>
+    </label>
+    <div class="settings-window__actions">
+     <button class="wood-button wood-button--primary" value="save">
+      Готово
+     </button>
+    </div>
+   </form>
+  </dialog>
+ </body>
 </html>
