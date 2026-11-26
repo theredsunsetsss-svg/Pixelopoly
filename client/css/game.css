@@ -393,7 +393,6 @@ button, a { font: inherit; }
   .center-divider { margin: 7px 0; height: 2px; }
   .center-message { margin-bottom: 5px; font-size: 9px; }
   .center-status { padding: 4px; font-size: 5px; border-width: 2px; }
-  .center-players { margin-top: 5px; font-size: 10px; }
   .players-panel { order: 2; }
   .action-panel { order: 3; }
   .game-footer { flex-wrap: wrap; justify-content: center; text-align: center; }

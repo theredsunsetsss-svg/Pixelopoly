@@ -1,33 +1,235 @@
 import { animateDice } from './dice-anim.js';
-const socket=io("http://localhost:3000");
-const params=new URLSearchParams(location.search);
-const mode=params.get("mode")||"join";
-const playerName=params.get("name")||localStorage.getItem("pixelopoly-player-name")||"Игрок";
-const $=id=>document.getElementById(id);
-const roomCode=$("room-code"),board=$("game-board"),playerList=$("player-list"),choices=$("character-choices");
-const readyButton=$("ready-button"),turnBox=$("turn-box"),rollButton=$("roll-button"),buyButton=$("buy-button"),endButton=$("end-turn-button");
-const faces=["⚀","⚁","⚂","⚃","⚄","⚅"];
-const portraits={"Следопыт":"../../img/all/RPG 1.png","Археолог":"../../img/all/RPG 2.png","Пират":"../../img/all/RPG 3.png","Маг":"../../img/all/RPG 4.png"};
-let myId=null,state=null,lastCell=null,canBuy=false;
-const cells=[
-["Старт","УГОЛ","start"],["Древние руины I","ТЕРРИТОРИЯ","territory","#a77b48","100"],["Сундук","СОБЫТИЕ","event"],["Древние руины II","ТЕРРИТОРИЯ","territory","#a77b48","120"],["Пещеры I","ТЕРРИТОРИЯ","territory","#8d7aa8","140"],["Лагерь следопытов","ЛАГЕРЬ","territory","#8b9a65","160"],["Ловушка","СОБЫТИЕ","event"],["Пещеры II","ТЕРРИТОРИЯ","territory","#8d7aa8","160"],["Отдых","УГОЛ","corner"],["Затерянный город I","ТЕРРИТОРИЯ","territory","#d0a34e","180"],["Источник силы","АРТЕФАКТ","event"],["Затерянный город II","ТЕРРИТОРИЯ","territory","#d0a34e","200"],["Порт","ЛАГЕРЬ","territory","#8b9a65","180"],["Пиратские острова I","ТЕРРИТОРИЯ","territory","#6c9a9c","220"],["Задание","СОБЫТИЕ","event"],["Пиратские острова II","ТЕРРИТОРИЯ","territory","#6c9a9c","240"],["Тюрьма","УГОЛ","jail"],["Древние руины III","ТЕРРИТОРИЯ","territory","#a77b48","140"],["Сундук","СОБЫТИЕ","event"],["Пещеры III","ТЕРРИТОРИЯ","territory","#8d7aa8","180"],["Таверна","ЛАГЕРЬ","territory","#8b9a65","200"],["Затерянный город III","ТЕРРИТОРИЯ","territory","#d0a34e","220"],["Телепорт","СОБЫТИЕ","event"],["Пиратские острова III","ТЕРРИТОРИЯ","territory","#6c9a9c","260"],["Переход","УГОЛ","corner"],["Древний компас","АРТЕФАКТ","event"],["Караван-сарай","ЛАГЕРЬ","territory","#8b9a65","220"],["Задание","СОБЫТИЕ","event"],["Затерянный город IV","ТЕРРИТОРИЯ","territory","#d0a34e","240"],["Ловушка","СОБЫТИЕ","event"],["Пиратские острова IV","ТЕРРИТОРИЯ","territory","#6c9a9c","280"],["Сундук","СОБЫТИЕ","event"],["Пещеры IV","ТЕРРИТОРИЯ","territory","#8d7aa8","200"],["Отдых","УГОЛ","corner"],["Лагерь","ЛАГЕРЬ","territory","#8b9a65","240"],["Событие","СОБЫТИЕ","event"],["Древние руины IV","ТЕРРИТОРИЯ","territory","#a77b48","160"],["Телепорт","СОБЫТИЕ","event"]];
-function notice(text){$("game-notice").textContent=text||"";}
-function drawBoard(){const pos=[];for(let c=11;c>=1;c--)pos.push([11,c]);for(let r=10;r>=1;r--)pos.push([r,1]);for(let c=2;c<=11;c++)pos.push([1,c]);for(let r=2;r<=10;r++)pos.push([r,11]);cells.forEach((c,i)=>{const el=document.createElement("div");el.className=`board-cell board-cell--${c[2]}`;el.style.gridRow=pos[i][0];el.style.gridColumn=pos[i][1];if(c[2]==="territory"){const strip=document.createElement("span");strip.className="color-strip";strip.style.setProperty("--tile-color",c[3]);el.append(strip);}const type=document.createElement("span");type.className="board-cell__type";type.textContent=c[1];const title=document.createElement("strong");title.textContent=c[0];el.append(type,title);if(c[4]){const price=document.createElement("span");price.className="board-cell__price";price.textContent=c[4]+" ◉";el.append(price);}board.append(el);});}
-function render(){if(!state)return;roomCode.textContent=state.code;playerList.replaceChildren();state.players.forEach(p=>{const card=document.createElement("article");card.className="player-card"+(p.id===myId?" is-you":"")+(p.ready?" is-ready":"");const avatar=document.createElement("div");avatar.className="player-avatar";if(p.character){const img=document.createElement("img");img.src=portraits[p.character];img.alt=p.character;avatar.append(img);}const info=document.createElement("div");info.className="player-info";const n=document.createElement("strong");n.textContent=p.name+(p.id===myId?" (Вы)":"");const ch=document.createElement("span");ch.className="player-character";ch.textContent=p.character||"Выбирает героя";const st=document.createElement("span");st.className="player-status";st.textContent=p.ready?"Готов":state.status==="playing"?"В игре":"Ожидает";info.append(n,ch,st);const money=document.createElement("span");money.className="player-coins";money.textContent=p.money+" ◉";card.append(avatar,info,money);playerList.append(card);});
-const me=state.players.find(p=>p.id===myId),started=state.status==="playing";$("center-status").textContent=started?"ИГРА ИДЁТ":"ОЖИДАНИЕ ИГРОКОВ";$("center-message").textContent=started?"Партия началась!":"Игроков в комнате: "+state.players.length+". Выбери героя и нажми «Готов».";$("center-players").textContent=state.players.map(p=>p.ready?"●":"◌").join(" ");
-choices.querySelectorAll("button").forEach(b=>{const taken=state.players.some(p=>p.id!==myId&&p.character===b.dataset.character);b.disabled=started||!!me?.ready||taken;b.classList.toggle("is-selected",me?.character===b.dataset.character);});
-readyButton.disabled=started||!me?.character;readyButton.textContent=me?.ready?"НЕ ГОТОВ":"ГОТОВ";$("ready-description").textContent=me?.character?(me.ready?"Ты готов.":"Персонаж: "+me.character):"Сначала выбери персонажа.";turnBox.hidden=!started;if(started){const myTurn=state.currentPlayerId===myId;rollButton.hidden=!myTurn;rollButton.disabled=!myTurn;endButton.hidden=!myTurn;buyButton.hidden=!myTurn||!canBuy;}}
-socket.on("connect",()=>{myId=socket.id;if(mode==="create"){socket.emit("room:create",{name:playerName,maxPlayers:Number(params.get("maxPlayers"))||4,maxTurns:Number(params.get("maxTurns"))||50,startMoney:Number(params.get("startMoney"))||1500,jailFine:Number(params.get("jailFine"))||500},res=>{if(!res?.success){notice(res?.message||"Не удалось создать комнату.");return;}history.replaceState({},"",`game.html?room=${res.code}`);notice("Комната создана. Отправь код друзьям.");});}else{socket.emit("room:join",{code:params.get("room"),name:playerName},res=>{if(!res?.success){notice(res?.message||"Не удалось войти. Проверь код.");$("center-status").textContent="ОШИБКА";}});}});
-socket.on("connect_error",()=>{$("center-status").textContent="НЕТ СВЯЗИ";$("center-message").textContent="Проверь, запущен ли сервер на localhost:3000.";});
-socket.on("room:update",s=>{state=s;render();});
-socket.on("game:started",()=>notice("Все готовы! Партия началась."));
-socket.on("game:dice", async (d) => {
-  await animateDice($("die-one"), $("die-two"), d.first, d.second);
-  $("turn-message").textContent = `Выпало ${d.first + d.second}.`;});
-socket.on("game:landed",d=>{lastCell=d.cell;canBuy=["property","camp","artifact"].includes(d.cell.type)&&!state?.properties?.[d.cellIndex];board.querySelectorAll(".board-cell").forEach((el,i)=>el.classList.toggle("is-highlighted",i===d.cellIndex));notice("Игрок остановился: "+d.cell.name);render();});
-socket.on("game:card",d=>notice(d.card.text));socket.on("game:notice",d=>notice(d.message));socket.on("game:error",d=>notice(d.message));socket.on("game:finished",()=>{notice("Партия завершена!");$("center-status").textContent="ФИНИШ";});
-choices.addEventListener("click",e=>{const b=e.target.closest("[data-character]");if(b&&!b.disabled)socket.emit("player:character",b.dataset.character);});
-readyButton.addEventListener("click",()=>{const me=state?.players.find(p=>p.id===myId);socket.emit("player:ready",!me?.ready);});
-rollButton.addEventListener("click",()=>socket.emit("game:roll"));buyButton.addEventListener("click",()=>socket.emit("property:buy"));endButton.addEventListener("click",()=>socket.emit("game:end-turn"));
-$("copy-code").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(roomCode.textContent);$("copy-code").textContent="✓";}catch{notice("Скопируй код вручную.");}});
+
+const socket = io(); 
+const params = new URLSearchParams(location.search);
+const mode = params.get("mode") || "join";
+const playerName = params.get("name") || localStorage.getItem("pixelopoly-player-name") || "Игрок";
+
+const $ = id => document.getElementById(id);
+const roomCode = $("room-code"), board = $("game-board"), playerList = $("player-list"), choices = $("character-choices");
+const readyButton = $("ready-button"), turnBox = $("turn-box"), rollButton = $("roll-button"), buyButton = $("buy-button"), endButton = $("end-turn-button");
+
+const faces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+// ИСПРАВЛЕНЫ ПУТИ К КАРТИНКАМ (убрано ../../)
+const portraits = {
+  "Следопыт": "/img/all/RPG 1.png",
+  "Археолог": "/img/all/RPG 2.png",
+  "Пират": "/img/all/RPG 3.png",
+  "Маг": "/img/all/RPG 4.png"
+};
+
+let myId = null;
+let myUserId = null; // <-- НОВОЕ: храним ID пользователя из БД
+let state = null;
+let lastCell = null;
+let canBuy = false;
+
+// Клетки оставляем как были, они не влияют на баги
+const cells = [
+  ["Старт","УГОЛ","start"],["Древние руины I","ТЕРРИТОРИЯ","territory","#a77b48","100"],["Сундук","СОБЫТИЕ","event"],["Древние руины II","ТЕРРИТОРИЯ","territory","#a77b48","120"],["Пещеры I","ТЕРРИТОРИЯ","territory","#8d7aa8","140"],["Лагерь следопытов","ЛАГЕРЬ","territory","#8b9a65","160"],["Ловушка","СОБЫТИЕ","event"],["Пещеры II","ТЕРРИТОРИЯ","territory","#8d7aa8","160"],["Отдых","УГОЛ","corner"],["Затерянный город I","ТЕРРИТОРИЯ","territory","#d0a34e","180"],["Источник силы","АРТЕФАКТ","event"],["Затерянный город II","ТЕРРИТОРИЯ","territory","#d0a34e","200"],["Порт","ЛАГЕРЬ","territory","#8b9a65","180"],["Пиратские острова I","ТЕРРИТОРИЯ","territory","#6c9a9c","220"],["Задание","СОБЫТИЕ","event"],["Пиратские острова II","ТЕРРИТОРИЯ","territory","#6c9a9c","240"],["Тюрьма","УГОЛ","jail"],["Древние руины III","ТЕРРИТОРИЯ","territory","#a77b48","140"],["Сундук","СОБЫТИЕ","event"],["Пещеры III","ТЕРРИТОРИЯ","territory","#8d7aa8","180"],["Таверна","ЛАГЕРЬ","territory","#8b9a65","200"],["Затерянный город III","ТЕРРИТОРИЯ","territory","#d0a34e","220"],["Телепорт","СОБЫТИЕ","event"],["Пиратские острова III","ТЕРРИТОРИЯ","territory","#6c9a9c","260"],["Переход","УГОЛ","corner"],["Древний компас","АРТЕФАКТ","event"],["Караван-сарай","ЛАГЕРЬ","territory","#8b9a65","220"],["Задание","СОБЫТИЕ","event"],["Затерянный город IV","ТЕРРИТОРИЯ","territory","#d0a34e","240"],["Ловушка","СОБЫТИЕ","event"],["Пиратские острова IV","ТЕРРИТОРИЯ","territory","#6c9a9c","280"],["Сундук","СОБЫТИЕ","event"],["Пещеры IV","ТЕРРИТОРИЯ","territory","#8d7aa8","200"],["Отдых","УГОЛ","corner"],["Лагерь","ЛАГЕРЬ","territory","#8b9a65","240"],["Событие","СОБЫТИЕ","event"],["Древние руины IV","ТЕРРИТОРИЯ","territory","#a77b48","160"],["Телепорт","СОБЫТИЕ","event"]
+];
+
+function notice(text) {
+  $("game-notice").textContent = text || "";
+}
+
+function drawBoard() {
+  const pos = [];
+  for(let c=11; c>=1; c--) pos.push([11,c]);
+  for(let r=10; r>=1; r--) pos.push([r,1]);
+  for(let c=2; c<=11; c++) pos.push([1,c]);
+  for(let r=2; r<=10; r++) pos.push([r,11]);
+  
+  cells.forEach((c,i) => {
+    const el = document.createElement("div");
+    el.className = `board-cell board-cell--${c[2]}`;
+    el.style.gridRow = pos[i][0];
+    el.style.gridColumn = pos[i][1];
+    if(c[2] === "territory") {
+      const strip = document.createElement("span");
+      strip.className = "color-strip";
+      strip.style.setProperty("--tile-color", c[3]);
+      el.append(strip);
+    }
+    const type = document.createElement("span");
+    type.className = "board-cell__type";
+    type.textContent = c[1];
+    const title = document.createElement("strong");
+    title.textContent = c[0];
+    el.append(type, title);
+    if(c[4]) {
+      const price = document.createElement("span");
+      price.className = "board-cell__price";
+      price.textContent = c[4] + " ◉";
+      el.append(price);
+    }
+    board.append(el);
+  });
+}
+
+function render() {
+  if(!state) return;
+  roomCode.textContent = state.code;
+  playerList.replaceChildren();
+  
+  state.players.forEach(p => {
+    const card = document.createElement("article");
+    card.className = "player-card" + (p.id === myId ? " is-you" : "") + (p.ready ? " is-ready" : "");
+    const avatar = document.createElement("div");
+    avatar.className = "player-avatar";
+    if(p.character) {
+      const img = document.createElement("img");
+      img.src = portraits[p.character];
+      img.alt = p.character;
+      avatar.append(img);
+    }
+    const info = document.createElement("div");
+    info.className = "player-info";
+    const n = document.createElement("strong");
+    n.textContent = p.name + (p.id === myId ? " (Вы)" : "");
+    const ch = document.createElement("span");
+    ch.className = "player-character";
+    ch.textContent = p.character || "Выбирает героя";
+    const st = document.createElement("span");
+    st.className = "player-status";
+    st.textContent = p.ready ? "Готов" : state.status === "playing" ? "В игре" : "Ожидает";
+    info.append(n, ch, st);
+    const money = document.createElement("span");
+    money.className = "player-coins";
+    money.textContent = p.money + " ◉";
+    card.append(avatar, info, money);
+    playerList.append(card);
+  });
+  
+  const me = state.players.find(p => p.id === myId), started = state.status === "playing";
+  $("center-status").textContent = started ? "ИГРА ИДЁТ" : "ОЖИДАНИЕ ИГРОКОВ";
+  $("center-message").textContent = started ? "Партия началась!" : "Игроков в комнате: " + state.players.length + ". Выбери героя и нажми «Готов».";
+  $("center-players").textContent = state.players.map(p => p.ready ? "●" : "◌").join(" ");
+  
+  choices.querySelectorAll("button").forEach(b => {
+    const taken = state.players.some(p => p.id !== myId && p.character === b.dataset.character);
+    b.disabled = started || !!me?.ready || taken;
+    b.classList.toggle("is-selected", me?.character === b.dataset.character);
+  });
+  
+  readyButton.disabled = started || !me?.character;
+  readyButton.textContent = me?.ready ? "НЕ ГОТОВ" : "ГОТОВ";
+  $("ready-description").textContent = me?.character ? (me.ready ? "Ты готов." : "Персонаж: " + me.character) : "Сначала выбери персонажа.";
+  
+  turnBox.hidden = !started;
+  if(started) {
+    const myTurn = state.currentPlayerId === myId;
+    rollButton.hidden = !myTurn;
+    rollButton.disabled = !myTurn;
+    endButton.hidden = !myTurn;
+    buyButton.hidden = !myTurn || !canBuy;
+  }
+}
+
+// --- ИНИЦИАЛИЗАЦИЯ ПОДКЛЮЧЕНИЯ ---
+// Запрашиваем данные пользователя из БД до подключения к сокету
+fetch('/api/me')
+  .then(res => {
+    if(res.ok) return res.json();
+    throw new Error('Гость');
+  })
+  .then(data => { 
+    if(data.user) {
+      myUserId = data.user.id; 
+      // Если мы авторизованы, берем имя из БД
+      if(!params.get("name")) {
+        localStorage.setItem("pixelopoly-player-name", data.user.username);
+      }
+    }
+  })
+  .catch(() => console.log("Играем как гость"))
+  .finally(() => {
+    // Этот код выполнится в любом случае (и для гостя, и для юзера)
+    // Здесь мы настраиваем сокет
+    setupSocket();
+  });
+
+function setupSocket() {
+  socket.on("connect", () => {
+    myId = socket.id;
+    if(mode === "create") {
+      socket.emit("room:create", {
+        name: localStorage.getItem("pixelopoly-player-name") || playerName,
+        maxPlayers: Number(params.get("maxPlayers")) || 4,
+        maxTurns: Number(params.get("maxTurns")) || 50,
+        startMoney: Number(params.get("startMoney")) || 1500,
+        jailFine: Number(params.get("jailFine")) || 500,
+        userId: myUserId // <-- ПЕРЕДАЕМ ID
+      }, res => {
+        if(!res?.success) { notice(res?.message || "Не удалось создать комнату."); return; }
+        history.replaceState({}, "", `game.html?room=${res.code}`);
+        notice("Комната создана. Отправь код друзьям.");
+      });
+    } else {
+      socket.emit("room:join", {
+        code: params.get("room"),
+        name: localStorage.getItem("pixelopoly-player-name") || playerName,
+        userId: myUserId // <-- ПЕРЕДАЕМ ID
+      }, res => {
+        if(!res?.success) { 
+          notice(res?.message || "Не удалось войти. Проверь код.");
+          $("center-status").textContent = "ОШИБКА"; 
+        }
+      });
+    }
+  });
+
+  socket.on("connect_error", () => {
+    $("center-status").textContent = "НЕТ СВЯЗИ";
+    $("center-message").textContent = "Проверь, запущен ли сервер на localhost:3000.";
+  });
+
+  // Обработчики событий игры
+  socket.on("room:update", s => { state = s; render(); });
+  socket.on("game:started", () => notice("Все готовы! Партия началась."));
+  
+  socket.on("game:dice", async (d) => {
+    await animateDice($("die-one"), $("die-two"), d.first, d.second);
+    $("turn-message").textContent = `Выпало ${d.first + d.second}.`;
+  });
+  
+  socket.on("game:landed", d => {
+    lastCell = d.cell;
+    canBuy = ["property", "camp", "artifact"].includes(d.cell.type) && !state?.properties?.[d.cellIndex];
+    board.querySelectorAll(".board-cell").forEach((el, i) => el.classList.toggle("is-highlighted", i === d.cellIndex));
+    notice("Игрок остановился: " + d.cell.name);
+    render();
+  });
+  
+  socket.on("game:card", d => notice(d.card.text));
+  socket.on("game:notice", d => notice(d.message));
+  socket.on("game:error", d => notice(d.message));
+  socket.on("game:finished", () => { notice("Партия завершена!"); $("center-status").textContent = "ФИНИШ"; });
+
+  // Кнопки
+  choices.addEventListener("click", e => {
+    const b = e.target.closest("[data-character]");
+    if(b && !b.disabled) socket.emit("player:character", b.dataset.character);
+  });
+  
+  readyButton.addEventListener("click", () => {
+    const me = state?.players.find(p => p.id === myId);
+    socket.emit("player:ready", !me?.ready);
+  });
+  
+  rollButton.addEventListener("click", () => socket.emit("game:roll"));
+  buyButton.addEventListener("click", () => socket.emit("property:buy"));
+  endButton.addEventListener("click", () => socket.emit("game:end-turn"));
+  
+  $("copy-code").addEventListener("click", async () => {
+    try { 
+      await navigator.clipboard.writeText(roomCode.textContent); 
+      $("copy-code").textContent = "✓"; 
+    } catch { 
+      notice("Скопируй код вручную."); 
+    }
+  });
+}
+
+// Запускаем отрисовку доски
 drawBoard();

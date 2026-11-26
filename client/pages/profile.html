@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pixelopoly — Мой Аккаунт</title>
+  <link rel="stylesheet" href="../css/extra-pages.css">
+  <script src="../js/profile.js" defer></script>
+  <style>
+    .profile-card { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
+    .profile-avatar { width: 80px; height: 80px; background: #dca45e; border: 3px solid #57351f; display: grid; place-items: center; font-size: 40px; border-radius: 50%; }
+    .profile-info h2 { margin: 0 0 5px 0; color: #57351f; font-size: 24px; }
+    .profile-info p { margin: 0; color: #775e4b; font-weight: bold; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+    .stat-box { background: #ead5a9; border: 2px solid #a87945; padding: 15px; text-align: center; }
+    .stat-box strong { display: block; font-size: 28px; color: #607b3e; font-family: "Press Start 2P", monospace; margin-bottom: 5px; }
+    .stat-box span { color: #68472d; font-weight: bold; font-size: 13px; }
+    .btn-logout { background: #a33c29; color: white; border: 3px solid #40271d; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 25px; transition: 0.2s; }
+    .btn-logout:hover { background: #c74b35; transform: scale(1.02); }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <a href="main.html">✦ PIXELOPOLY</a>
+    <a href="main.html">На главную</a>
+  </header>
+
+  <section class="panel">
+    <h1>ЛИЧНЫЙ КАБИНЕТ</h1>
+    
+    <div class="profile-card">
+      <div class="profile-avatar">👤</div>
+      <div class="profile-info">
+        <h2 id="user-name">Загрузка...</h2>
+        <p id="user-email">...</p>
+        <p id="user-role" style="font-size: 12px; color: #a87945; margin-top: 5px;"></p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <strong id="user-wins">0</strong>
+        <span>Побед</span>
+      </div>
+      <div class="stat-box">
+        <strong id="user-games">0</strong>
+        <span>Всего партий</span>
+      </div>
+    </div>
+
+    <button class="btn-logout" id="logout-btn">ВЫЙТИ ИЗ АККАУНТА</button>
+  </section>
+</main>
+</body>
+</html>
